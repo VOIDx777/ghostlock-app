@@ -29,7 +29,8 @@ jobs:
 
       - name: Create API 35 Symlinks for NDK 26
         run: |
-          NDK_BIN="${{ steps.setup-android.outputs.android-sdk-root }}/ndk/26.1.10909125/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          NDK_BIN="$ANDROID_SDK_ROOT/ndk/26.1.10909125/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          echo "Using NDK Bin path: $NDK_BIN"
           cd "$NDK_BIN"
           ln -sf aarch64-linux-android34-clang aarch64-linux-android35-clang
           ln -sf aarch64-linux-android34-clang++ aarch64-linux-android35-clang++
@@ -45,7 +46,7 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew clean assembleDebug
         env:
-          ANDROID_NDK_HOME: ${{ steps.setup-android.outputs.android-sdk-root }}/ndk/26.1.10909125
+          ANDROID_NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/26.1.10909125
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
